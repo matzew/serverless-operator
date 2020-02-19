@@ -304,7 +304,7 @@ spec:
                       value: "knative-serving-openshift"
                     - name: MIN_OPENSHIFT_VERSION
                       value: "4.3.0"
-                    - name: REQUIRED_NAMESPACE
+                    - name: REQUIRED_SERVING_NAMESPACE
                       value: "knative-serving"
                     - name: IMAGE_queue-proxy
                       value: registry.svc.ci.openshift.org/openshift/knative-v0.12.1:knative-serving-queue
