@@ -167,7 +167,7 @@ func (r *ReconcileKnativeServing) installKourier(instance *servingv1alpha1.Knati
 func (a *ReconcileKnativeServing) installNetworkPolicies(instance *servingv1alpha1.KnativeServing) error {
 	namespace := instance.GetNamespace()
 	log.Info("Installing Network Policies")
-	const path = "deploy/resources/networkpolicies.yaml"
+	const path = "deploy/resources/serving_networkpolicies.yaml"
 
 	manifest, err := mf.NewManifest(path, false, a.client)
 	if err != nil {
