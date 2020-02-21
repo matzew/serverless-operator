@@ -38,9 +38,10 @@ func TestMutate(t *testing.T) {
 	}
 	verifyEgress(t, ks, networks)
 	verifyIngress(t, ks, domain)
-	verifyImageOverride(t, ks, image)
+	verifyImageOverride(t, &ks.Spec.Registry, "queue-proxy", image)
+	verifyQueueProxySidecarImageOverride(t, ks, image)
 	verifyCerts(t, ks)
-	verifyTimestamp(t, ks)
+	verifyTimestamp(t, ks.GetAnnotations())
 }
 
 func mockNetworkConfig(networks []string) *configv1.Network {
@@ -79,24 +80,15 @@ func verifyIngress(t *testing.T, ks *servingv1alpha1.KnativeServing, expected st
 	}
 }
 
-func verifyImageOverride(t *testing.T, ks *servingv1alpha1.KnativeServing, expected string) {
+func verifyQueueProxySidecarImageOverride(t *testing.T, ks *servingv1alpha1.KnativeServing, expected string) {
 	// Because we overrode the queue image...
 	if ks.Spec.Config["deployment"]["queueSidecarImage"] != expected {
 		t.Errorf("Missing queue image, config=%v", ks.Spec.Config["deployment"])
-	}
-	if ks.Spec.Registry.Override["queue-proxy"] != expected {
-		t.Errorf("Missing queue image, override=%v", ks.Spec.Registry.Override)
 	}
 }
 
 func verifyCerts(t *testing.T, ks *servingv1alpha1.KnativeServing) {
 	if ks.Spec.ControllerCustomCerts == (servingv1alpha1.CustomCerts{}) {
 		t.Error("Missing custom certs config")
-	}
-}
-
-func verifyTimestamp(t *testing.T, ks *servingv1alpha1.KnativeServing) {
-	if _, ok := ks.GetAnnotations()[common.MutationTimestampKey]; !ok {
-		t.Error("Missing mutation timestamp annotation")
 	}
 }

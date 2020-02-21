@@ -3,15 +3,13 @@ package common
 import (
 	"context"
 	"fmt"
-	"os"
-	"strings"
-	"time"
-
 	configv1 "github.com/openshift/api/config/v1"
 	routev1 "github.com/openshift/api/route/v1"
 	"k8s.io/apimachinery/pkg/api/meta"
 	servingv1alpha1 "knative.dev/serving-operator/pkg/apis/serving/v1alpha1"
+	"os"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+	"strings"
 )
 
 var log = Log
@@ -24,7 +22,7 @@ func Mutate(ks *servingv1alpha1.KnativeServing, c client.Client) error {
 		configureLogURLTemplate,
 		ensureCustomCerts,
 		imagesFromEnviron,
-		annotateTimestamp,
+		annotateTimestampServing,
 	}
 	for _, stage := range stages {
 		if err := stage(ks, c); err != nil {
@@ -122,12 +120,11 @@ func imagesFromEnviron(ks *servingv1alpha1.KnativeServing, _ client.Client) erro
 }
 
 // Mark the time when instance configured for OpenShift
-func annotateTimestamp(ks *servingv1alpha1.KnativeServing, _ client.Client) error {
-	annotations := ks.GetAnnotations()
-	if annotations == nil {
-		annotations = map[string]string{}
+func annotateTimestampServing(ks *servingv1alpha1.KnativeServing, _ client.Client) error {
+	if ks.GetAnnotations() == nil {
+		ks.SetAnnotations(map[string]string{})
 	}
-	annotations[MutationTimestampKey] = time.Now().Format(time.RFC3339)
-	ks.SetAnnotations(annotations)
+	annotateTimestamp(ks.GetAnnotations())
+
 	return nil
 }
