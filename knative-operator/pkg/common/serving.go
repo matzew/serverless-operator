@@ -7,7 +7,6 @@ import (
 	routev1 "github.com/openshift/api/route/v1"
 	"k8s.io/apimachinery/pkg/api/meta"
 	servingv1alpha1 "knative.dev/serving-operator/pkg/apis/serving/v1alpha1"
-	"os"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"strings"
 )
@@ -109,13 +108,18 @@ func ensureCustomCerts(ks *servingv1alpha1.KnativeServing, _ client.Client) erro
 
 // imagesFromEnviron overrides registry images
 func imagesFromEnviron(ks *servingv1alpha1.KnativeServing, _ client.Client) error {
-	updateImagesFromEnviron(&ks.Spec.Registry)
+	ks.Spec.Registry.Override = buildImageOverrideMapFromEnviron()
 
-	// special case for queue-proxy
-	if qp := os.Getenv("IMAGE_queue-proxy"); qp != "" {
-		Configure(ks, "deployment", "queueSidecarImage", qp)
+	if defaultVal, ok := ks.Spec.Registry.Override["default"]; ok {
+		ks.Spec.Registry.Default = defaultVal
 	}
 
+	// special case for queue-proxy
+	if qpVal, ok := ks.Spec.Registry.Override["queue-proxy"]; ok {
+		Configure(ks, "deployment", "queueSidecarImage", qpVal)
+	}
+
+	log.Info("Setting", "registry", ks.Spec.Registry)
 	return nil
 }
 
