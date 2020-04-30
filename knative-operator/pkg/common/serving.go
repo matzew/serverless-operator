@@ -116,7 +116,7 @@ func ensureCustomCerts(ks *servingv1alpha1.KnativeServing, _ client.Client) erro
 
 // imagesFromEnviron overrides registry images
 func imagesFromEnviron(ks *servingv1alpha1.KnativeServing, _ client.Client) error {
-	ks.Spec.Registry.Override = buildImageOverrideMapFromEnviron()
+	ks.Spec.Registry.Override = BuildImageOverrideMapFromEnviron()
 
 	if defaultVal, ok := ks.Spec.Registry.Override["default"]; ok {
 		ks.Spec.Registry.Default = defaultVal

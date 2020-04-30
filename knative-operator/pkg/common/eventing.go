@@ -19,7 +19,7 @@ func MutateEventing(ke *eventingv1alpha1.KnativeEventing, c client.Client) error
 
 // eventingImagesFromEnviron overrides registry images
 func eventingImagesFromEnviron(ke *eventingv1alpha1.KnativeEventing, _ client.Client) error {
-	ke.Spec.Registry.Override = buildImageOverrideMapFromEnviron()
+	ke.Spec.Registry.Override = BuildImageOverrideMapFromEnviron()
 
 	if defaultVal, ok := ke.Spec.Registry.Override["default"]; ok {
 		ke.Spec.Registry.Default = defaultVal
