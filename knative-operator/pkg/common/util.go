@@ -3,7 +3,6 @@ package common
 import (
 	"fmt"
 	servingv1alpha1 "knative.dev/serving-operator/pkg/apis/serving/v1alpha1"
-	"os"
 	logf "sigs.k8s.io/controller-runtime/pkg/runtime/log"
 	"strings"
 )
@@ -36,10 +35,10 @@ func IngressNamespace(servingNamespace string) string {
 }
 
 // BuildImageOverrideMapFromEnviron creates a map to overrides registry images
-func BuildImageOverrideMapFromEnviron() map[string]string {
+func BuildImageOverrideMapFromEnviron(environ []string) map[string]string {
 	overrideMap := map[string]string{}
 
-	for _, e := range os.Environ() {
+	for _, e := range environ {
 		pair := strings.SplitN(e, "=", 2)
 		if strings.HasPrefix(pair[0], "IMAGE_") {
 			suffix := strings.SplitN(pair[0], "_", 2)[1]

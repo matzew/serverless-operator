@@ -1,9 +1,9 @@
 package common_test
 
 import (
+	"fmt"
 	"testing"
 
-	"os"
 	"reflect"
 
 	"github.com/openshift-knative/serverless-operator/knative-operator/pkg/common"
@@ -14,55 +14,67 @@ import (
 func TestBuildImageOverrideMapFromEnviron(t *testing.T) {
 	cases := []struct {
 		name     string
-		envVar   string
-		value    string
+		envMap   map[string]string
 		expected map[string]string
 	}{
 		{
-			name:   "Simple container name",
-			envVar: "IMAGE_foo",
-			value:  "quay.io/myimage",
+			name: "Simple container name",
+			envMap: map[string]string{
+				"IMAGE_foo": "quay.io/myimage",
+			},
 			expected: map[string]string{
 				"foo": "quay.io/myimage",
 			},
 		},
 		{
-			name:   "Deployment+container name",
-			envVar: "IMAGE_foo_bar",
-			value:  "quay.io/myimage",
+			name: "Deployment+container name",
+			envMap: map[string]string{
+				"IMAGE_foo_bar": "quay.io/myimage",
+			},
 			expected: map[string]string{
 				"foo/bar": "quay.io/myimage",
 			},
 		},
 		{
-			name:   "3 underscores",
-			envVar: "IMAGE_foo_bar_baz",
-			value:  "quay.io/myimage",
+			name: "Deployment+container and container name",
+			envMap: map[string]string{
+				"IMAGE_foo_bar": "quay.io/myimage1",
+				"IMAGE_bar":     "quay.io/myimage2",
+			},
+			expected: map[string]string{
+				"foo/bar": "quay.io/myimage1",
+				"bar":     "quay.io/myimage2",
+			},
+		},
+		{
+			name: "3 underscores",
+			envMap: map[string]string{
+				"IMAGE_foo_bar_baz": "quay.io/myimage",
+			},
 			expected: map[string]string{
 				"foo/bar_baz": "quay.io/myimage",
 			},
 		},
 		{
-			name:     "Different prefix",
-			envVar:   "X_foo",
-			value:    "quay.io/myimage",
+			name: "Different prefix",
+			envMap: map[string]string{
+				"X_foo": "quay.io/myimage",
+			},
 			expected: map[string]string{},
 		},
 		{
-			name:     "No env var value",
-			envVar:   "IMAGE_foo",
-			value:    "",
+			name: "No env var value",
+			envMap: map[string]string{
+				"IMAGE_foo": "",
+			},
 			expected: map[string]string{},
 		},
 	}
 
-	os.Clearenv()
-
 	for i := range cases {
 		tc := cases[i]
-		os.Setenv(tc.envVar, tc.value)
-		overrideMap := common.BuildImageOverrideMapFromEnviron()
-		os.Unsetenv(tc.envVar)
+		environ := environFromMap(tc.envMap)
+		overrideMap := common.BuildImageOverrideMapFromEnviron(environ)
 
 		if !reflect.DeepEqual(overrideMap, tc.expected) {
 			t.Errorf("Image override map is not equal. Case name: %q. Expected: %v, actual: %v", tc.name, tc.expected, overrideMap)
@@ -75,4 +87,14 @@ func verifyImageOverride(t *testing.T, registry *servingv1alpha1.Registry, image
 	if registry.Override[imageName] != expected {
 		t.Errorf("Missing queue image. Expected a map with following override in it : %v=%v, actual: %v", imageName, expected, registry.Override)
 	}
+}
+
+func environFromMap(envMap map[string]string) []string {
+	e := []string{}
+
+	for k, v := range envMap {
+		e = append(e, fmt.Sprintf("%s=%s", k, v))
+	}
+
+	return e
 }
