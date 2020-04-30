@@ -56,6 +56,8 @@ func TestBuildImageOverrideMapFromEnviron(t *testing.T) {
 		},
 	}
 
+	os.Clearenv()
+
 	for i := range cases {
 		tc := cases[i]
 		os.Setenv(tc.envVar, tc.value)
