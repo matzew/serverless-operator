@@ -355,21 +355,21 @@ spec:
                       value: docker.io/maistra/proxyv2-ubi8:1.0.8
                     - name: IMAGE_3scale-kourier-control
                       value: quay.io/3scale/kourier:fix_duplication
-                    - name: IMAGE_eventing-controller__eventing-controller
+                    - name: IMAGE_eventing-controller_eventing-controller
                       value: registry.svc.ci.openshift.org/openshift/knative-v0.14.0:knative-eventing-controller
-                    - name: IMAGE_eventing-webhook__eventing-webhook
+                    - name: IMAGE_eventing-webhook_eventing-webhook
                       value: registry.svc.ci.openshift.org/openshift/knative-v0.14.0:knative-eventing-webhook
-                    - name: IMAGE_broker-controller__eventing_controller
+                    - name: IMAGE_broker-controller_eventing_controller
                       value: registry.svc.ci.openshift.org/openshift/knative-v0.14.0:knative-eventing-channel-broker
-                    - name: IMAGE_broker-filter__filter
+                    - name: IMAGE_broker-filter_filter
                       value: registry.svc.ci.openshift.org/openshift/knative-v0.14.0:knative-eventing-mtbroker-filter
-                    - name: IMAGE_broker-ingress__ingress
+                    - name: IMAGE_broker-ingress_ingress
                       value: registry.svc.ci.openshift.org/openshift/knative-v0.14.0:knative-eventing-mtbroker-ingress
-                    - name: IMAGE_mt-broker-controller__eventing-controller
+                    - name: IMAGE_mt-broker-controller_eventing-controller
                       value: registry.svc.ci.openshift.org/openshift/knative-v0.14.0:knative-eventing-mtchannel-broker
-                    - name: IMAGE_imc-controller__controller
+                    - name: IMAGE_imc-controller_controller
                       value: registry.svc.ci.openshift.org/openshift/knative-v0.14.0:knative-eventing-channel-controller
-                    - name: IMAGE_imc-dispatcher__dispatcher
+                    - name: IMAGE_imc-dispatcher_dispatcher
                       value: registry.svc.ci.openshift.org/openshift/knative-v0.14.0:knative-eventing-channel-dispatcher
                     - name: IMAGE_PING_IMAGE
                       value: registry.svc.ci.openshift.org/openshift/knative-v0.14.0:knative-eventing-ping
@@ -518,21 +518,21 @@ spec:
       image: $IMAGE_KNATIVE_OPENSHIFT_INGRESS
     - name: knative-eventing-operator
       image: registry.svc.ci.openshift.org/openshift/knative-v0.14.0:knative-eventing-operator
-    - name: IMAGE_eventing-controller__eventing-controller
+    - name: IMAGE_eventing-controller_eventing-controller
       image: registry.svc.ci.openshift.org/openshift/knative-v0.14.0:knative-eventing-controller
-    - name: IMAGE_eventing-webhook__eventing-webhook
+    - name: IMAGE_eventing-webhook_eventing-webhook
       image: registry.svc.ci.openshift.org/openshift/knative-v0.14.0:knative-eventing-webhook
-    - name: IMAGE_broker-controller__eventing_controller
+    - name: IMAGE_broker-controller_eventing_controller
       image: registry.svc.ci.openshift.org/openshift/knative-v0.14.0:knative-eventing-channel-broker
-    - name: IMAGE_broker-filter__filter
+    - name: IMAGE_broker-filter_filter
       image: registry.svc.ci.openshift.org/openshift/knative-v0.14.0:knative-eventing-mtbroker-filter
-    - name: IMAGE_broker-ingress__ingress
+    - name: IMAGE_broker-ingress_ingress
       image: registry.svc.ci.openshift.org/openshift/knative-v0.14.0:knative-eventing-mtbroker-ingress
-    - name: IMAGE_mt-broker-controller__eventing-controller
+    - name: IMAGE_mt-broker-controller_eventing-controller
       image: registry.svc.ci.openshift.org/openshift/knative-v0.14.0:knative-eventing-mtchannel-broker
-    - name: IMAGE_imc-controller__controller
+    - name: IMAGE_imc-controller_controller
       image: registry.svc.ci.openshift.org/openshift/knative-v0.14.0:knative-eventing-channel-controller
-    - name: IMAGE_imc-dispatcher__dispatcher
+    - name: IMAGE_imc-dispatcher_dispatcher
       image: registry.svc.ci.openshift.org/openshift/knative-v0.14.0:knative-eventing-channel-dispatcher
     - name: IMAGE_PING_IMAGE
       image: registry.svc.ci.openshift.org/openshift/knative-v0.14.0:knative-eventing-ping
