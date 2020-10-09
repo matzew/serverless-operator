@@ -31,6 +31,9 @@ func (e *extension) Reconcile(ctx context.Context, comp v1alpha1.KComponent) err
 	ke.Spec.Registry.Override = images
 	ke.Spec.Registry.Default = images["default"]
 
+	// This prevents the sinkbinding webhook touches all namespaces
+	ke.Spec.SinkBindingSelectionMode = "inclusion"
+
 	// Ensure webhook has 1G of memory.
 	common.EnsureContainerMemoryLimit(&ke.Spec.CommonSpec, "eventing-webhook", resource.MustParse("1024Mi"))
 

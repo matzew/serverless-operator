@@ -42,6 +42,9 @@ func TestReconcile(t *testing.T) {
 func ke(mods ...func(*v1alpha1.KnativeEventing)) *v1alpha1.KnativeEventing {
 	base := &v1alpha1.KnativeEventing{
 		Spec: v1alpha1.KnativeEventingSpec{
+
+			SinkBindingSelectionMode: "inclusion",
+
 			CommonSpec: v1alpha1.CommonSpec{
 				Registry: v1alpha1.Registry{
 					Default: "bar2",
