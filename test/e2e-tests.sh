@@ -11,26 +11,27 @@ if [ -n "$OPENSHIFT_CI" ]; then
 fi
 debugging.setup
 
-scale_up_workers || exit $?
-create_namespaces || exit $?
-create_htpasswd_users && add_roles || exit $?
+# Setup cluster for the "test-e2e" target
+if [[ $TEST_KNATIVE_KAFKA == false ]]; then
+  scale_up_workers || exit $?
+  create_namespaces || exit $?
+  create_htpasswd_users && add_roles || exit $?
 
-failed=0
+  failed=0
 
-(( !failed )) && install_catalogsource || failed=1
-(( !failed )) && logger.success '🚀 Cluster prepared for testing.'
+  (( !failed )) && install_catalogsource || failed=1
+  (( !failed )) && logger.success '🚀 Cluster prepared for testing.'
 
-# Run serverless-operator specific tests.
-(( !failed )) && serverless_operator_e2e_tests || failed=2
-(( !failed )) && ensure_serverless_installed || failed=3
-if [[ $TEST_KNATIVE_KAFKA == true ]]; then
-  (( !failed )) && install_strimzi || failed=6
-  (( !failed )) && serverless_operator_kafka_e2e_tests || failed=7
+  # Run serverless-operator specific tests.
+  (( !failed )) && serverless_operator_e2e_tests || failed=2
+  (( !failed )) && ensure_serverless_installed || failed=3
+  # Run Knative Serving & Eventing downstream E2E tests.
+  (( !failed )) && downstream_serving_e2e_tests || failed=4
+  (( !failed )) && downstream_eventing_e2e_tests || failed=5
+else
+  # Run Kafka things only when expclitly enabled in the "test-e2e-kafka" target
+  (( !failed )) && serverless_operator_kafka_e2e_tests || failed=6
 fi
-
-# Run Knative Serving & Eventing downstream E2E tests.
-(( !failed )) && downstream_serving_e2e_tests || failed=4
-(( !failed )) && downstream_eventing_e2e_tests || failed=5
 
 (( failed )) && dump_state
 (( failed )) && exit $failed

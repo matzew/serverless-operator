@@ -36,9 +36,10 @@ test-unit:
 test-e2e:
 	./test/e2e-tests.sh
 
-# TODO: that will - soon... run the Kafka operator e2e hook
+# Install Strimzi and run the Kafka specific e2e tests
 test-e2e-kafka:
-	echo "Noop for now"
+	UNINSTALL_STRIMZI=false ./hack/strimzi.sh
+	TEST_KNATIVE_KAFKA=true ./test/e2e-tests.sh
 
 # Run both unit and E2E tests from the current repo.
 test-operator: test-unit test-e2e
