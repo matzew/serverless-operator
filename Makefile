@@ -61,6 +61,9 @@ test-upgrade: test-upstream-upgrade
 # Run all E2E tests. Used by periodic CI jobs.
 test-all-e2e: test-e2e test-upstream-e2e
 
+test-create-users:
+	./test/create-users.sh
+
 # Generates a ci-operator configuration for a specific branch.
 generate-ci-config:
 	./openshift/ci-operator/generate-ci-config.sh $(BRANCH) > ci-operator-config.yaml
