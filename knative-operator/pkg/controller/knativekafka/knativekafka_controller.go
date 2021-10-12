@@ -66,11 +66,23 @@ func newReconciler(mgr manager.Manager) (*ReconcileKnativeKafka, error) {
 		return nil, fmt.Errorf("failed to load KafkaSource manifest: %w", err)
 	}
 
+	kafkaControllerManifest, err := mf.ManifestFrom(mf.Path(os.Getenv("KAFKA_CONTROLLER_MANIFEST_PATH")))
+	if err != nil {
+		return nil, fmt.Errorf("failed to load KafkaController manifest: %w", err)
+	}
+
+	kafkaBrokerManifest, err := mf.ManifestFrom(mf.Path(os.Getenv("KAFKA_BROKER_MANIFEST_PATH")))
+	if err != nil {
+		return nil, fmt.Errorf("failed to load KafkaBroker manifest: %w", err)
+	}
+
 	reconcileKnativeKafka := ReconcileKnativeKafka{
 		client:                  mgr.GetClient(),
 		scheme:                  mgr.GetScheme(),
 		rawKafkaChannelManifest: kafkaChannelManifest,
 		rawKafkaSourceManifest:  kafkaSourceManifest,
+		rawKafkaControllerManifest: kafkaControllerManifest,
+		rawKafkaBrokerManifest: kafkaBrokerManifest,
 	}
 	return &reconcileKnativeKafka, nil
 }
@@ -108,10 +120,12 @@ var _ reconcile.Reconciler = &ReconcileKnativeKafka{}
 type ReconcileKnativeKafka struct {
 	// This client, initialized using mgr.Client() above, is a split client
 	// that reads objects from the cache and writes to the apiserver
-	client                  client.Client
-	scheme                  *runtime.Scheme
-	rawKafkaChannelManifest mf.Manifest
-	rawKafkaSourceManifest  mf.Manifest
+	client                     client.Client
+	scheme                     *runtime.Scheme
+	rawKafkaChannelManifest    mf.Manifest
+	rawKafkaSourceManifest     mf.Manifest
+	rawKafkaControllerManifest mf.Manifest
+	rawKafkaBrokerManifest     mf.Manifest
 }
 
 // Reconcile reads that state of the cluster for a KnativeKafka object and makes changes based on the state read
@@ -401,6 +415,14 @@ func (r *ReconcileKnativeKafka) buildManifest(instance *operatorv1alpha1.Knative
 		}
 		resources = append(resources, sourceRBACProxy.Resources()...)
 		resources = append(resources, r.rawKafkaSourceManifest.Resources()...)
+	}
+
+	// here add the two broker files
+	if build == manifestBuildAll || (build == manifestBuildEnabledOnly && instance.Spec.Broker.Enabled) || (build == manifestBuildDisabledOnly && !instance.Spec.Broker.Enabled) {
+		// TODO: RBAC
+
+		resources = append(resources, r.rawKafkaControllerManifest.Resources()...)
+		resources = append(resources, r.rawKafkaBrokerManifest.Resources()...)
 	}
 
 	manifest, err := mf.ManifestFrom(

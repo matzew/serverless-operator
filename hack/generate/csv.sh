@@ -73,6 +73,12 @@ kafka_image "kafka-ch-controller__controller"      "${eventing_kafka}-consolidat
 kafka_image "DISPATCHER_IMAGE"                     "${eventing_kafka}-consolidated-dispatcher"
 kafka_image "kafka-webhook__kafka-webhook"         "${eventing_kafka}-webhook"
 
+kafka_image "kafka-broker-receiver__kafka-broker-receiver" "quay.io/matzew/knative-kafka-broker-receiver"
+kafka_image "kafka-broker-dispatcher__kafka-broker-dispatcher" "quay.io/matzew/knative-kafka-broker-dispatcher"
+kafka_image "kafka-controller__controller" "quay.io/matzew/knative-kafka-broker-controller"
+kafka_image "kafka-webhook-eventing__kafka-webhook-eventing" "quay.io/matzew/knative-kafka-broker-webhook"
+
+
 image "KUBE_RBAC_PROXY"   "${rbac_proxy}"
 
 declare -A yaml_keys

@@ -510,6 +510,10 @@ spec:
                         value: deploy/resources/knativekafka/1-channel-consolidated.yaml
                       - name: KAFKASOURCE_MANIFEST_PATH
                         value: deploy/resources/knativekafka/2-source.yaml
+                      - name: KAFKA_CONTROLLER_MANIFEST_PATH
+                        value: deploy/resources/knativekafka/1-eventing-kafka-controller.yaml
+                      - name: KAFKA_BROKER_MANIFEST_PATH
+                        value: deploy/resources/knativekafka/2-eventing-kafka-broker.yaml
                       - name: QUICKSTART_MANIFEST_PATH
                         value: "deploy/resources/quickstart/serverless-application-quickstart.yaml"
                       - name: DASHBOARDS_ROOT_MANIFEST_PATH

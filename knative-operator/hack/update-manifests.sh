@@ -9,6 +9,7 @@ root="$(dirname "${BASH_SOURCE[0]}")/../.."
 source "$root/hack/lib/__sources__.bash"
 
 kafka_files=(channel-consolidated source)
+kafka_broker_files=(eventing-kafka-controller eventing-kafka-broker)
 
 function download_kafka {
   component=$1
@@ -49,3 +50,8 @@ git apply "$root/knative-operator/hack/002-eventing-kafka-ctor-role.patch"
 
 # Will be no longer needed with SRVKE-812
 git apply "$root/knative-operator/hack/008-keep-old-config-as-default.patch"
+
+download_kafka eventing-kafka-broker "$KNATIVE_EVENTING_KAFKA_BROKER_VERSION" "${kafka_broker_files[@]}"
+
+# That CM is already there, with Eventing
+git apply "$root/knative-operator/hack/001-broker-config-tracing.patch"

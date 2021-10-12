@@ -9,6 +9,9 @@ import (
 // KnativeKafkaSpec defines the desired state of KnativeKafka
 // +k8s:openapi-gen=true
 type KnativeKafkaSpec struct {
+	// Allows configuration for KafkaBroker installation
+	// +optional
+	Broker Broker `json:"broker,omitempty"`
 	// Allows configuration for KafkaSource installation
 	// +optional
 	Source Source `json:"source,omitempty"`
@@ -52,6 +55,11 @@ type KnativeKafkaList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []KnativeKafka `json:"items"`
+}
+
+type Broker struct {
+	// Enabled defines if the KafkaBroker installation is enabled
+	Enabled bool `json:"enabled"`
 }
 
 // Source allows configuration for KafkaSource installation

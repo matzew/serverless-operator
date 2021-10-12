@@ -66,6 +66,16 @@ spec:
                 required:
                 - enabled
                 type: object
+              broker:
+                description: Allows configuration for KafkaBroker installation
+                properties:
+                  enabled:
+                    description: Enabled defines if the KafkaBroker installation is
+                      enabled
+                    type: boolean
+                required:
+                - enabled
+                type: object
               high-availability:
                 description: Allows specification of HA control plane
                 properties:
