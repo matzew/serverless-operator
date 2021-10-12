@@ -77,12 +77,12 @@ func newReconciler(mgr manager.Manager) (*ReconcileKnativeKafka, error) {
 	}
 
 	reconcileKnativeKafka := ReconcileKnativeKafka{
-		client:                  mgr.GetClient(),
-		scheme:                  mgr.GetScheme(),
-		rawKafkaChannelManifest: kafkaChannelManifest,
-		rawKafkaSourceManifest:  kafkaSourceManifest,
+		client:                     mgr.GetClient(),
+		scheme:                     mgr.GetScheme(),
+		rawKafkaChannelManifest:    kafkaChannelManifest,
+		rawKafkaSourceManifest:     kafkaSourceManifest,
 		rawKafkaControllerManifest: kafkaControllerManifest,
-		rawKafkaBrokerManifest: kafkaBrokerManifest,
+		rawKafkaBrokerManifest:     kafkaBrokerManifest,
 	}
 	return &reconcileKnativeKafka, nil
 }
