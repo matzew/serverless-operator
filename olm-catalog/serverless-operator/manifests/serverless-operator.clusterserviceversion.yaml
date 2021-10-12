@@ -886,10 +886,13 @@ spec:
 =======
       image: "registry.ci.openshift.org/openshift/knative-v0.25.3:knative-eventing-kafka-webhook"
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> e5453305 (Adding simple broker enabled type/struct, and adding manifests and generated code for broker)
   replaces: serverless-operator.v1.19.0
   version: 1.20.0
 =======
+=======
+>>>>>>> 6abd3156 (:run: Running make generated-files...)
     - name: "KAFKA_IMAGE_kafka-broker-receiver__kafka-broker-receiver"
       image: "quay.io/matzew/knative-kafka-broker-receiver"
     - name: "KAFKA_IMAGE_kafka-broker-dispatcher__kafka-broker-dispatcher"
@@ -898,6 +901,5 @@ spec:
       image: "quay.io/matzew/knative-kafka-broker-controller"
     - name: "KAFKA_IMAGE_kafka-webhook-eventing__kafka-webhook-eventing"
       image: "quay.io/matzew/knative-kafka-broker-webhook"
-  replaces: serverless-operator.v1.18.0
-  version: 1.19.0
->>>>>>> a2bb7279 (Adding simple broker enabled type/struct, and adding manifests and generated code for broker)
+  replaces: serverless-operator.v1.19.0
+  version: 1.20.0
