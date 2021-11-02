@@ -625,19 +625,15 @@ spec:
                       - name: "KAFKA_IMAGE_DISPATCHER_IMAGE"
                         value: "registry.ci.openshift.org/openshift/knative-v0.26.0:knative-eventing-kafka-consolidated-dispatcher"
                       - name: "KAFKA_IMAGE_kafka-webhook__kafka-webhook"
-<<<<<<< HEAD
                         value: "registry.ci.openshift.org/openshift/knative-v0.26.0:knative-eventing-kafka-webhook"
-=======
-                        value: "registry.ci.openshift.org/openshift/knative-v0.25.3:knative-eventing-kafka-webhook"
                       - name: "KAFKA_IMAGE_kafka-broker-receiver__kafka-broker-receiver"
-                        value: "quay.io/matzew/knative-kafka-broker-receiver"
+                        value: "quay.io/openshift-knative/knative-eventing-kafka-broker-receiver:v0.26.0"
                       - name: "KAFKA_IMAGE_kafka-broker-dispatcher__kafka-broker-dispatcher"
-                        value: "quay.io/matzew/knative-kafka-broker-dispatcher"
+                        value: "quay.io/openshift-knative/knative-eventing-kafka-broker-dispatcher:v0.26.0"
                       - name: "KAFKA_IMAGE_kafka-controller__controller"
-                        value: "quay.io/matzew/knative-kafka-broker-controller"
+                        value: "quay.io/openshift-knative/knative-eventing-kafka-broker-kafka-controller:v0.26.0"
                       - name: "KAFKA_IMAGE_kafka-webhook-eventing__kafka-webhook-eventing"
-                        value: "quay.io/matzew/knative-kafka-broker-webhook"
->>>>>>> e5453305 (Adding simple broker enabled type/struct, and adding manifests and generated code for broker)
+                        value: "quay.io/openshift-knative/knative-eventing-kafka-broker-webhook-kafka:v0.26.0"
                       - name: "KNATIVE_EVENTING_KAFKA_VERSION"
                         value: "0.26.0"
                     securityContext:
@@ -881,25 +877,14 @@ spec:
     - name: "KAFKA_IMAGE_DISPATCHER_IMAGE"
       image: "registry.ci.openshift.org/openshift/knative-v0.26.0:knative-eventing-kafka-consolidated-dispatcher"
     - name: "KAFKA_IMAGE_kafka-webhook__kafka-webhook"
-<<<<<<< HEAD
       image: "registry.ci.openshift.org/openshift/knative-v0.26.0:knative-eventing-kafka-webhook"
-=======
-      image: "registry.ci.openshift.org/openshift/knative-v0.25.3:knative-eventing-kafka-webhook"
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> e5453305 (Adding simple broker enabled type/struct, and adding manifests and generated code for broker)
-  replaces: serverless-operator.v1.19.0
-  version: 1.20.0
-=======
-=======
->>>>>>> 6abd3156 (:run: Running make generated-files...)
     - name: "KAFKA_IMAGE_kafka-broker-receiver__kafka-broker-receiver"
-      image: "quay.io/matzew/knative-kafka-broker-receiver"
+      image: "quay.io/openshift-knative/knative-eventing-kafka-broker-receiver:v0.26.0"
     - name: "KAFKA_IMAGE_kafka-broker-dispatcher__kafka-broker-dispatcher"
-      image: "quay.io/matzew/knative-kafka-broker-dispatcher"
+      image: "quay.io/openshift-knative/knative-eventing-kafka-broker-dispatcher:v0.26.0"
     - name: "KAFKA_IMAGE_kafka-controller__controller"
-      image: "quay.io/matzew/knative-kafka-broker-controller"
+      image: "quay.io/openshift-knative/knative-eventing-kafka-broker-kafka-controller:v0.26.0"
     - name: "KAFKA_IMAGE_kafka-webhook-eventing__kafka-webhook-eventing"
-      image: "quay.io/matzew/knative-kafka-broker-webhook"
+      image: "quay.io/openshift-knative/knative-eventing-kafka-broker-webhook-kafka:v0.26.0"
   replaces: serverless-operator.v1.19.0
   version: 1.20.0
