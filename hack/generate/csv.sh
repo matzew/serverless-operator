@@ -73,11 +73,10 @@ kafka_image "kafka-ch-controller__controller"      "${eventing_kafka}-consolidat
 kafka_image "DISPATCHER_IMAGE"                     "${eventing_kafka}-consolidated-dispatcher"
 kafka_image "kafka-webhook__kafka-webhook"         "${eventing_kafka}-webhook"
 
-kafka_image "kafka-broker-receiver__kafka-broker-receiver" "quay.io/openshift-knative/knative-eventing-kafka-broker-receiver:v0.26.0"
-kafka_image "kafka-broker-dispatcher__kafka-broker-dispatcher" "quay.io/openshift-knative/knative-eventing-kafka-broker-dispatcher:v0.26.0"
-kafka_image "kafka-controller__controller" "quay.io/openshift-knative/knative-eventing-kafka-broker-kafka-controller:v0.26.0"
-kafka_image "kafka-webhook-eventing__kafka-webhook-eventing" "quay.io/openshift-knative/knative-eventing-kafka-broker-webhook-kafka:v0.26.0"
-
+kafka_image "kafka-broker-receiver__kafka-broker-receiver"      "${eventing_kafka}-broker-receiver"
+kafka_image "kafka-broker-dispatcher__kafka-broker-dispatcher"  "${eventing_kafka}-broker-dispatcher"
+kafka_image "kafka-controller__controller"                      "${eventing_kafka}-broker-kafka-controller"
+kafka_image "kafka-webhook-eventing__kafka-webhook-eventing"    "${eventing_kafka}-broker-webhook-kafka"
 
 image "KUBE_RBAC_PROXY"   "${rbac_proxy}"
 
