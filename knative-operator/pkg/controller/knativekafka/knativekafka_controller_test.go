@@ -286,7 +286,7 @@ func TestSetBootstrapServers(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			err := setBootstrapServers(test.bootstrapServers)(test.obj)
+			err := setChannelBootstrapServers(test.bootstrapServers)(test.obj)
 			if err != nil {
 				t.Fatalf("setBootstrapServers: (%v)", err)
 			}

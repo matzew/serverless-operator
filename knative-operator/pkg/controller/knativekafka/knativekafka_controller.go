@@ -254,7 +254,11 @@ func (r *ReconcileKnativeKafka) transform(manifest *mf.Manifest, instance *opera
 			common.KafkaOwnerNamespace: instance.Namespace,
 		}),
 		setKafkaDeployments(instance.Spec.HighAvailability.Replicas),
-		setBootstrapServers(instance.Spec.Channel.BootstrapServers),
+
+		// TODO...
+		setChannelBootstrapServers(instance.Spec.Channel.BootstrapServers),
+		setBrokerBootstrapServers(instance.Spec.Broker.BootstrapServers),
+
 		setAuthSecret(instance.Spec.Channel.AuthSecretNamespace, instance.Spec.Channel.AuthSecretName),
 		ImageTransform(common.BuildImageOverrideMapFromEnviron(os.Environ(), "KAFKA_IMAGE_"), log),
 		replicasTransform(manifest.Client),
@@ -436,11 +440,24 @@ func (r *ReconcileKnativeKafka) buildManifest(instance *operatorv1alpha1.Knative
 }
 
 // setBootstrapServers sets Kafka bootstrapServers value in config-kafka
-func setBootstrapServers(bootstrapServers string) mf.Transformer {
+func setChannelBootstrapServers(bootstrapServers string) mf.Transformer {
 	return func(u *unstructured.Unstructured) error {
 		if u.GetKind() == "ConfigMap" && u.GetName() == "config-kafka" {
 			log.Info("Found ConfigMap config-kafka, updating it with bootstrapServers from spec")
 			if err := unstructured.SetNestedField(u.Object, bootstrapServers, "data", "bootstrapServers"); err != nil {
+				return err
+			}
+		}
+		return nil
+	}
+}
+
+// setBootstrapServers sets Kafka bootstrapServers value in kafka-broker-config
+func setBrokerBootstrapServers(bootstrapServers string) mf.Transformer {
+	return func(u *unstructured.Unstructured) error {
+		if u.GetKind() == "ConfigMap" && u.GetName() == "kafka-broker-config" {
+			log.Info("Found ConfigMap kafka-broker-config, updating it with bootstrapServers from spec")
+			if err := unstructured.SetNestedField(u.Object, bootstrapServers, "data", "bootstrap.servers"); err != nil {
 				return err
 			}
 		}
