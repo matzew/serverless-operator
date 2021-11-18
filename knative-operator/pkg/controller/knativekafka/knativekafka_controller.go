@@ -252,10 +252,7 @@ func (r *ReconcileKnativeKafka) transform(manifest *mf.Manifest, instance *serve
 		}),
 		setKafkaDeployments(instance.Spec.HighAvailability.Replicas),
 		updateEventingKafka(instance.Spec.Channel),
-
-		// TODO: this will be done differently!
-		setBrokerBootstrapServers(instance.Spec.Broker.BootstrapServers),
-
+		configureKafkaBroker(instance.Spec.Broker),
 		ImageTransform(common.BuildImageOverrideMapFromEnviron(os.Environ(), "KAFKA_IMAGE_"), log),
 		replicasTransform(manifest.Client),
 		configMapHashTransform(manifest.Client),
@@ -463,11 +460,22 @@ func updateEventingKafka(kafkachannel serverlessoperatorv1alpha1.Channel) mf.Tra
 }
 
 // setBootstrapServers sets Kafka bootstrapServers value in kafka-broker-config
-func setBrokerBootstrapServers(bootstrapServers string) mf.Transformer {
+func configureKafkaBroker(kafkaBroker serverlessoperatorv1alpha1.Broker) mf.Transformer {
 	return func(u *unstructured.Unstructured) error {
 		if u.GetKind() == "ConfigMap" && u.GetName() == "kafka-broker-config" {
 			log.Info("Found ConfigMap kafka-broker-config, updating it with bootstrapServers from spec")
-			if err := unstructured.SetNestedField(u.Object, bootstrapServers, "data", "bootstrap.servers"); err != nil {
+
+			if err := unstructured.SetNestedField(u.Object, kafkaBroker.BootstrapServers, "data", "bootstrap.servers"); err != nil {
+				return err
+			}
+			if err := unstructured.SetNestedField(u.Object, int32(kafkaBroker.NumPartitions), "data", "default.topic.partitions"); err != nil {
+				return err
+			}
+			// Replication Factor
+			if err := unstructured.SetNestedField(u.Object, int32(kafkaBroker.ReplicationFactor), "data", "default.topic.replication.factor"); err != nil {
+				return err
+			}
+			if err := unstructured.SetNestedField(u.Object, kafkaBroker.AuthSecretName, "data", "auth.secret.ref.name"); err != nil {
 				return err
 			}
 		}
