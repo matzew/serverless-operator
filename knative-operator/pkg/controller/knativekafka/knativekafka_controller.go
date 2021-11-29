@@ -466,7 +466,8 @@ func configureKafkaBroker(kafkaBroker serverlessoperatorv1alpha1.Broker) mf.Tran
 		if u.GetKind() == "ConfigMap" && u.GetName() == "kafka-broker-config" {
 			log.Info("Found ConfigMap kafka-broker-config, updating it with values from spec")
 
-			if err := unstructured.SetNestedField(u.Object, kafkaBroker.BootstrapServers, "data", "bootstrap.servers"); err != nil {
+			// we need to be able to accept ZERO global config
+			if err := unstructured.SetNestedField(u.Object, extractBootstrapServers(kafkaBroker), "data", "bootstrap.servers"); err != nil {
 				return err
 			}
 
@@ -485,6 +486,16 @@ func configureKafkaBroker(kafkaBroker serverlessoperatorv1alpha1.Broker) mf.Tran
 		}
 		return nil
 	}
+}
+
+// if we have empty BootstrapServers we set it to NOOP, so that we can still reconcile
+// this is needed if ZERO global config is desired
+func extractBootstrapServers(kafkaBroker serverlessoperatorv1alpha1.Broker) string {
+	bootstrapServers := kafkaBroker.BootstrapServers
+	if bootstrapServers == "" {
+		bootstrapServers = "NOOP"
+	}
+	return bootstrapServers
 }
 
 func checkHAComponent(name string) bool {
