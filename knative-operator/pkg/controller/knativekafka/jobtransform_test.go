@@ -25,14 +25,14 @@ func TestJobTransform(t *testing.T) {
 			Status: serverlessoperatorv1alpha1.KnativeKafkaStatus{Version: "1.0.0"},
 		},
 		job:      createJob(StorageVersionMigration, ""),
-		expected: StorageVersionMigration + "-eventing-kafka-1.0.0",
+		expected: StorageVersionMigration + "-1.0.0",
 	}, {
 		name: "ChangeNameWithGeneratedNameForKnativeKafka",
 		component: serverlessoperatorv1alpha1.KnativeKafka{
 			Status: serverlessoperatorv1alpha1.KnativeKafkaStatus{Version: "1.0.0"},
 		},
 		job:      createJob("", StorageVersionMigration),
-		expected: StorageVersionMigration + "-eventing-kafka-1.0.0",
+		expected: StorageVersionMigration + "-1.0.0",
 	}}
 
 	for _, tt := range tests {

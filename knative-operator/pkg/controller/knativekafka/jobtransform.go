@@ -17,12 +17,11 @@ func JobTransform(instance *serverlessoperatorv1alpha1.KnativeKafka) mf.Transfor
 				return err
 			}
 
-			component := "eventing-kafka"
 			version := instance.Status.Version
 			if job.GetName() == "" {
-				job.SetName(fmt.Sprintf("%s%s-%s", job.GetGenerateName(), component, version))
+				job.SetName(fmt.Sprintf("%s%s", job.GetGenerateName(), version))
 			} else {
-				job.SetName(fmt.Sprintf("%s-%s-%s", job.GetName(), component, version))
+				job.SetName(fmt.Sprintf("%s-%s", job.GetName(), version))
 			}
 
 			return scheme.Scheme.Convert(job, u, nil)
