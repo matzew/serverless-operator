@@ -1,6 +1,7 @@
 package knativekafka
 
 import (
+	serverlessoperatorv1alpha1 "github.com/openshift-knative/serverless-operator/knative-operator/pkg/apis/operator/v1alpha1"
 	batchv1 "k8s.io/api/batch/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes/scheme"
@@ -14,25 +15,30 @@ const (
 
 func TestJobTransform(t *testing.T) {
 	tests := []struct {
-		name    string
-		version string
-		//		component v1alpha1.KComponent
-		job      batchv1.Job
-		expected string
+		name      string
+		component serverlessoperatorv1alpha1.KnativeKafka
+		job       batchv1.Job
+		expected  string
 	}{{
-		name:     "ChangeNameForServingJob",
+		name: "ChangeNameForKnativeKafka",
+		component: serverlessoperatorv1alpha1.KnativeKafka{
+			Status: serverlessoperatorv1alpha1.KnativeKafkaStatus{Version: "1.0.0"},
+		},
 		job:      createJob(StorageVersionMigration, ""),
-		expected: StorageVersionMigration + "-eventing-kafka",
+		expected: StorageVersionMigration + "-eventing-kafka-1.0.0",
 	}, {
-		name:     "ChangeNameWithGeneratedNameForServingJob",
+		name: "ChangeNameWithGeneratedNameForKnativeKafka",
+		component: serverlessoperatorv1alpha1.KnativeKafka{
+			Status: serverlessoperatorv1alpha1.KnativeKafkaStatus{Version: "1.0.0"},
+		},
 		job:      createJob("", StorageVersionMigration),
-		expected: StorageVersionMigration + "-eventing-kafka",
+		expected: StorageVersionMigration + "-eventing-kafka-1.0.0",
 	}}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			unstructuredJob := util.MakeUnstructured(t, &tt.job)
-			transform := JobTransform()
+			transform := JobTransform(&tt.component)
 			transform(&unstructuredJob)
 
 			var job = &batchv1.Job{}
