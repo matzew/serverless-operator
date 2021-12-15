@@ -1,0 +1,21 @@
+diff --git a/knative-operator/deploy/resources/knativekafka/source/2-source-post-install.yaml b/knative-operator/deploy/resources/knativekafka/source/2-source-post-install.yaml
+index d85c336df..87ad1f030 100644
+--- a/knative-operator/deploy/resources/knativekafka/source/2-source-post-install.yaml
++++ b/knative-operator/deploy/resources/knativekafka/source/2-source-post-install.yaml
+@@ -15,7 +15,7 @@
+ apiVersion: rbac.authorization.k8s.io/v1
+ kind: ClusterRole
+ metadata:
+-  name: knative-eventing-kafka-channel-post-install-job-role
++  name: knative-eventing-kafka-source-post-install-job-role
+   labels:
+     kafka.eventing.knative.dev/release: "v1.0.0"
+ rules:
+@@ -131,6 +131,6 @@ spec:
+         - name: migrate
+           image: TO_BE_REPLACED
+           args:
+-            - "kafkasources.messaging.knative.dev"
++            - "kafkasources.sources.knative.dev"
+ 
+ ---
