@@ -8,8 +8,8 @@ root="$(dirname "${BASH_SOURCE[0]}")/../.."
 # shellcheck disable=SC1091,SC1090
 source "$root/hack/lib/__sources__.bash"
 
-kafka_channel_files=(channel-consolidated)
-kafka_source_files=(source)
+kafka_channel_files=(channel-consolidated channel-post-install)
+kafka_source_files=(source source-post-install)
 kafka_broker_files=(eventing-kafka)
 
 function download_kafka {

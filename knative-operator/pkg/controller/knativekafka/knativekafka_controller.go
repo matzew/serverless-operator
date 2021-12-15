@@ -258,6 +258,7 @@ func (r *ReconcileKnativeKafka) transform(manifest *mf.Manifest, instance *serve
 		setKafkaDeployments(instance.Spec.HighAvailability.Replicas),
 		updateEventingKafka(instance.Spec.Channel),
 		configureKafkaBroker(instance.Spec.Broker.DefaultConfig),
+		JobTransform(),
 		ImageTransform(common.BuildImageOverrideMapFromEnviron(os.Environ(), "KAFKA_IMAGE_"), log),
 		replicasTransform(manifest.Client),
 		configMapHashTransform(manifest.Client),
