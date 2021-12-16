@@ -109,10 +109,10 @@ roleRef:
 apiVersion: batch/v1
 kind: Job
 metadata:
-  generateName: storage-version-migration-eventing-kafka-source-
+  generateName: version-migration-kafka-source-
   namespace: knative-eventing
   labels:
-    app: "storage-version-migration-eventing-kafka-source"
+    app: "version-migration-kafka-source"
     kafka.eventing.knative.dev/release: "v1.0.0"
 spec:
   ttlSecondsAfterFinished: 600
@@ -120,7 +120,7 @@ spec:
   template:
     metadata:
       labels:
-        app: "storage-version-migration-eventing-kafka-source"
+        app: "version-migration-kafka-source"
         kafka.eventing.knative.dev/release: "v1.0.0"
       annotations:
         sidecar.istio.io/inject: "false"
