@@ -51,6 +51,8 @@ git apply "$root/knative-operator/hack/007-eventing-kafka-patch-pdb.patch"
 # For 1.22 this is not needed (upstream 1.1)
 git apply "$root/knative-operator/hack/002-eventing-kafka-source-migrator.patch"
 
+git apply "$root/knative-operator/hack/003-eventing-kafka-shorter-names.patch"
+
 # Kafka Broker content:
 download_kafka eventing-kafka-broker broker "$KNATIVE_EVENTING_KAFKA_BROKER_VERSION" "${kafka_broker_files[@]}"
 
