@@ -2,6 +2,8 @@ package knativekafka
 
 import (
 	"fmt"
+	"os"
+
 	mf "github.com/manifestival/manifestival"
 	serverlessoperatorv1alpha1 "github.com/openshift-knative/serverless-operator/knative-operator/pkg/apis/operator/v1alpha1"
 	batchv1 "k8s.io/api/batch/v1"
@@ -17,11 +19,12 @@ func JobTransform(instance *serverlessoperatorv1alpha1.KnativeKafka) mf.Transfor
 				return err
 			}
 
-			version := instance.Status.Version
+			version := targetVersion(instance)
+			component := "eventing-kafka"
 			if job.GetName() == "" {
-				job.SetName(fmt.Sprintf("%s%s", job.GetGenerateName(), version))
+				job.SetName(fmt.Sprintf("%s%s-%s", job.GetGenerateName(), component, version))
 			} else {
-				job.SetName(fmt.Sprintf("%s-%s", job.GetName(), version))
+				job.SetName(fmt.Sprintf("%s-%s-%s", job.GetName(), component, version))
 			}
 
 			return scheme.Scheme.Convert(job, u, nil)
@@ -29,4 +32,12 @@ func JobTransform(instance *serverlessoperatorv1alpha1.KnativeKafka) mf.Transfor
 
 		return nil
 	}
+}
+
+func targetVersion(instance *serverlessoperatorv1alpha1.KnativeKafka) string {
+
+	if version := instance.Status.Version; version != "" {
+		return version
+	}
+	return os.Getenv("KNATIVE_EVENTING_KAFKA_VERSION")
 }
