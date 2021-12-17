@@ -7,11 +7,11 @@ index 64d9a4b5d..01ddc6f65 100644
  kind: Job
  metadata:
 -  generateName: storage-version-migration-eventing-kafka-channel-
-+  generateName: version-migration-kafka-channel-
++  generateName: kafka-version-migration-channel-
    namespace: knative-eventing
    labels:
 -    app: "storage-version-migration-eventing-kafka-channel"
-+    app: "version-migration-kafka-channel"
++    app: "kafka-version-migration-channel"
      kafka.eventing.knative.dev/release: "v1.0.0"
  spec:
    ttlSecondsAfterFinished: 600
@@ -20,7 +20,7 @@ index 64d9a4b5d..01ddc6f65 100644
      metadata:
        labels:
 -        app: "storage-version-migration-eventing-kafka-channel"
-+        app: "version-migration-kafka-channel"
++        app: "kafka-version-migration-channel"
          kafka.eventing.knative.dev/release: "v1.0.0"
        annotations:
          sidecar.istio.io/inject: "false"
@@ -33,11 +33,11 @@ index 87ad1f030..967d8a441 100644
  kind: Job
  metadata:
 -  generateName: storage-version-migration-eventing-kafka-source-
-+  generateName: version-migration-kafka-source-
++  generateName: kafka-version-migration-source-
    namespace: knative-eventing
    labels:
 -    app: "storage-version-migration-eventing-kafka-source"
-+    app: "version-migration-kafka-source"
++    app: "kafka-version-migration-source"
      kafka.eventing.knative.dev/release: "v1.0.0"
  spec:
    ttlSecondsAfterFinished: 600
@@ -46,7 +46,7 @@ index 87ad1f030..967d8a441 100644
      metadata:
        labels:
 -        app: "storage-version-migration-eventing-kafka-source"
-+        app: "version-migration-kafka-source"
++        app: "kafka-version-migration-source"
          kafka.eventing.knative.dev/release: "v1.0.0"
        annotations:
          sidecar.istio.io/inject: "false"

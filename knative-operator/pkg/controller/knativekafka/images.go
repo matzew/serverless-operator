@@ -17,6 +17,7 @@ var delimiter = "/"
 
 // ImageTransform updates image with a new registry and tag
 func ImageTransform(overrideMap map[string]string, log logr.Logger) mf.Transformer {
+	log.Info("WE ARE HERE.........")
 	return func(u *unstructured.Unstructured) error {
 		var podSpec *corev1.PodSpec
 		var obj metav1.Object
@@ -39,6 +40,7 @@ func ImageTransform(overrideMap map[string]string, log logr.Logger) mf.Transform
 			obj = ds
 			podSpec = &ds.Spec.Template.Spec
 		case "Job":
+			log.Info(":::NAME ->>> " + u.GetName())
 			job := &batchv1.Job{}
 			if err := scheme.Scheme.Convert(u, job, nil); err != nil {
 				return fmt.Errorf("failed to convert Unstructured to Job: %w", err)
@@ -56,8 +58,24 @@ func ImageTransform(overrideMap map[string]string, log logr.Logger) mf.Transform
 			container := &containers[i]
 
 			// Replace direct image YAML references.
+
+			if u.GetKind() == "Deployment" {
+				log.Info("Deployment:THE KEY..............." + obj.GetName() + delimiter + container.Name)
+
+				log.Info("Deployment:THE VAL:            " + overrideMap[obj.GetName()+delimiter+container.Name])
+			}
+
+			if u.GetKind() == "Job" {
+				log.Info("THE KEY..............." + obj.GetName() + delimiter + container.Name)
+
+				log.Info("THE VAL:            " + overrideMap[obj.GetName()+delimiter+container.Name])
+			}
+
 			if image, ok := overrideMap[obj.GetName()+delimiter+container.Name]; ok {
 				container.Image = image
+
+				log.Info("IMAGE:                   " + container.Image)
+
 			} else if image, ok := overrideMap[container.Name]; ok {
 				container.Image = image
 			}
