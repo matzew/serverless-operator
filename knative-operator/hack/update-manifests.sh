@@ -69,4 +69,4 @@ download_kafka eventing-kafka-broker source "$KNATIVE_EVENTING_KAFKA_BROKER_VERS
 git apply "$root/knative-operator/hack/001-broker-config-tracing.patch"
 
 # For now we remove the CRDs, since the "broker" does not yet do anything with them
-git apply "$root/knative-operator/hack/003-broker-remove-duplicated-crds.patch"
+#git apply "$root/knative-operator/hack/003-broker-remove-duplicated-crds.patch"
