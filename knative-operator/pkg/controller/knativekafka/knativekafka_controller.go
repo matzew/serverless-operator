@@ -433,19 +433,20 @@ func (r *ReconcileKnativeKafka) buildManifest(instance *serverlessoperatorv1alph
 		resources = append(resources, r.rawKafkaChannelManifest.Resources()...)
 	}
 
-	if build == manifestBuildAll || (build == manifestBuildEnabledOnly && instance.Spec.Source.Enabled) || (build == manifestBuildDisabledOnly && !instance.Spec.Source.Enabled) {
-		sourceRBACProxy, err := monitoring.AddRBACProxySupportToManifest(instance, monitoring.KafkaSourceComponents)
-		if err != nil {
-			return nil, err
-		}
-		resources = append(resources, sourceRBACProxy.Resources()...)
-		resources = append(resources, r.rawKafkaSourceManifest.Resources()...)
-	}
-
 	// Kafka Control Plane
 	if build == manifestBuildAll || (build == manifestBuildEnabledOnly && enableControlPlaneManifest(instance.Spec)) || (build == manifestBuildDisabledOnly && !enableControlPlaneManifest(instance.Spec)) {
 		// TODO: RBAC
 		resources = append(resources, r.rawKafkaControllerManifest.Resources()...)
+	}
+
+	// Kafka Source Data Plan
+	if build == manifestBuildAll || (build == manifestBuildEnabledOnly && instance.Spec.Source.Enabled) || (build == manifestBuildDisabledOnly && !instance.Spec.Source.Enabled) {
+		//sourceRBACProxy, err := monitoring.AddRBACProxySupportToManifest(instance, monitoring.KafkaSourceComponents)
+		//if err != nil {
+		//	return nil, err
+		//}
+		//resources = append(resources, sourceRBACProxy.Resources()...)
+		resources = append(resources, r.rawKafkaSourceManifest.Resources()...)
 	}
 
 	// Kafka Broker Data Plane
@@ -471,7 +472,7 @@ func (r *ReconcileKnativeKafka) buildManifest(instance *serverlessoperatorv1alph
 }
 
 func enableControlPlaneManifest(spec serverlessoperatorv1alpha1.KnativeKafkaSpec) bool {
-	return spec.Broker.Enabled || spec.Sink.Enabled
+	return spec.Broker.Enabled || spec.Sink.Enabled || spec.Source.Enabled
 }
 
 func configureLegacyEventingKafka(kafkachannel serverlessoperatorv1alpha1.Channel) mf.Transformer {
