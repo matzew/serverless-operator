@@ -42,7 +42,7 @@ function download_kafka {
 }
 
 download_kafka eventing-kafka channel "$KNATIVE_EVENTING_KAFKA_VERSION" "${kafka_channel_files[@]}"
-download_kafka eventing-kafka source "$KNATIVE_EVENTING_KAFKA_VERSION" "${kafka_source_files[@]}"
+#download_kafka eventing-kafka source "$KNATIVE_EVENTING_KAFKA_VERSION" "${kafka_source_files[@]}"
 
 # For 1.17 we still skip HPA
 git apply "$root/knative-operator/hack/001-eventing-kafka-remove_hpa.patch"
