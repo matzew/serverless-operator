@@ -644,17 +644,12 @@ spec:
               value: kafka-channel-config
             - name: SINK_GENERAL_CONFIG_MAP_NAME
               value: kafka-broker-config
-<<<<<<< HEAD
-            - name: BROKER_INGRESS_POD_PORT
-              value: "8080"
-=======
             - name: SOURCE_GENERAL_CONFIG_MAP_NAME
               value: kafka-broker-config
             - name: BROKER_INGRESS_POD_PORT
               value: "8080"
             - name: CHANNEL_INGRESS_POD_PORT
               value: "8080"
->>>>>>> 5cd7bea41 (:dizzy: Landing knative kafka broker 1.1 components - independent from Kafka core...)
             - name: SINK_INGRESS_POD_PORT
               value: "8080"
             - name: BROKER_SYSTEM_NAMESPACE
@@ -791,16 +786,6 @@ rules:
     verbs:
       - list
       - get
-
-  # Eventing resources care about
-  - apiGroups:
-      - "eventing.knative.dev"
-    resources:
-      - "brokers"
-    verbs:
-      - list
-      - get
-      - watch
 
 ---
 # Copyright 2020 The Knative Authors
