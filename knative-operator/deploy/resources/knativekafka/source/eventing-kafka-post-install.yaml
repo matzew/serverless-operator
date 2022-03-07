@@ -171,7 +171,7 @@ roleRef:
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: kafka-controller-post-install
+  name: kafka-controller-post-install-1.1
   namespace: knative-eventing
   labels:
     app: kafka-controller-post-install
