@@ -35,7 +35,9 @@ function download_kafka {
       echo "Downloading file from ${url}"
       wget --no-check-certificate "$url" -O "$target_file"
     else
+      echo "Copying file from ${file}"
       cp "${KNATIVE_EVENTING_KAFKA_BROKER_MANIFESTS_DIR}/${file}" "$target_file"
+      cat $target_file
     fi
 
     # Break all image references so we know our overrides work correctly.
