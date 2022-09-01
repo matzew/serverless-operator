@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"strings"
 
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
@@ -622,6 +623,22 @@ func configureEventingKafka(spec serverlessoperatorv1alpha1.KnativeKafkaSpec) mf
 			}
 			if kafkaBrokerDefaultConfig.AuthSecretName != "" {
 				if err := unstructured.SetNestedField(u.Object, kafkaBrokerDefaultConfig.AuthSecretName, "data", "auth.secret.ref.name"); err != nil {
+					return err
+				}
+			}
+		}
+
+		// add the LOGGER for kafka-config-logging
+
+		logLevel := "ERROR"
+		//		xmlTemplate := "    <configuration>\n      <appender name=\"jsonConsoleAppender\" class=\"ch.qos.logback.core.ConsoleAppender\">\n        <encoder class=\"net.logstash.logback.encoder.LogstashEncoder\"/>\n      </appender>\n      <root level=\"" + logLevel + " \">\n        <appender-ref ref=\"jsonConsoleAppender\"/>\n      </root>\n    </configuration>"
+		if u.GetKind() == "ConfigMap" && u.GetName() == "kafka-config-logging" {
+			log.Info("Found ConfigMap kafka-channel-config, updating it with values from spec")
+
+			field, exists, err := unstructured.NestedString(u.Object, "data", "config.xml")
+			if exists && err == nil {
+				//				updated := strings.Replace(field, "INFO", logLevel, -1)
+				if err := unstructured.SetNestedField(u.Object, strings.Replace(field, "INFO", logLevel, -1), "data", "config.xml"); err != nil {
 					return err
 				}
 			}
