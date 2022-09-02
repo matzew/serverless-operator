@@ -2,10 +2,10 @@ package knativekafka
 
 import (
 	"context"
+	"encoding/xml"
 	"fmt"
 	"os"
 	"strconv"
-	"strings"
 
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
@@ -58,6 +58,14 @@ var (
 	KafkaHAComponents = []string{"kafka-controller", "kafka-webhook-eventing"}
 )
 
+type Configuration struct {
+	XMLName xml.Name `xml:"configuration"`
+	Root    []Root   `xml:"root"`
+}
+type Root struct {
+	XMLName xml.Name `xml:"root"`
+	Level   string   `xml:"level,attr"`
+}
 type EventingKafkaConfig struct {
 	Kafka kafkaconfig.EKKafkaConfig `json:"kafka,omitempty"`
 }
@@ -631,16 +639,32 @@ func configureEventingKafka(spec serverlessoperatorv1alpha1.KnativeKafkaSpec) mf
 		// add the LOGGER for kafka-config-logging
 
 		logLevel := "ERROR"
-		//		xmlTemplate := "    <configuration>\n      <appender name=\"jsonConsoleAppender\" class=\"ch.qos.logback.core.ConsoleAppender\">\n        <encoder class=\"net.logstash.logback.encoder.LogstashEncoder\"/>\n      </appender>\n      <root level=\"" + logLevel + " \">\n        <appender-ref ref=\"jsonConsoleAppender\"/>\n      </root>\n    </configuration>"
 		if u.GetKind() == "ConfigMap" && u.GetName() == "kafka-config-logging" {
 			log.Info("Found ConfigMap kafka-channel-config, updating it with values from spec")
 
 			field, exists, err := unstructured.NestedString(u.Object, "data", "config.xml")
 			if exists && err == nil {
-				//				updated := strings.Replace(field, "INFO", logLevel, -1)
-				if err := unstructured.SetNestedField(u.Object, strings.Replace(field, "INFO", logLevel, -1), "data", "config.xml"); err != nil {
-					return err
+
+				var config Configuration
+				err := xml.Unmarshal([]byte(field), &config)
+				if err != nil {
+					config.Root[0].Level = logLevel
+					output, err := xml.Marshal(config)
+					if err != nil {
+						if err := unstructured.SetNestedField(u.Object, string(output), "data", "config.xml"); err != nil {
+							return err
+						}
+					}
 				}
+
+				//output, err := xml.Marshal(config)
+				//if err != nil {
+				//	//					if err := unstructured.SetNestedField(u.Object, strings.Replace(field, "INFO", logLevel, -1), "data", "config.xml"); err != nil {
+				//	if err := unstructured.SetNestedField(u.Object, string(output), "data", "config.xml"); err != nil {
+				//		return err
+				//	}
+				//}
+				//				updated := strings.Replace(field, "INFO", logLevel, -1)
 			}
 		}
 
