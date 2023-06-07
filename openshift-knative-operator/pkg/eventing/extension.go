@@ -88,6 +88,32 @@ func (e *extension) Reconcile(ctx context.Context, comp base.KComponent) error {
 		}
 	}
 
+	// override IMC to lower default replicas
+	//	if ke.Spec.Workloads
+
+	ke.Spec.Workloads = []base.WorkloadOverride{
+		{
+			Name:     "imc-controller",
+			Replicas: ptr.Int32(1),
+		},
+		{
+			Name:     "imc-dispatcher",
+			Replicas: ptr.Int32(1),
+		},
+		{
+			Name:     "mt-broker-controller",
+			Replicas: ptr.Int32(1),
+		},
+		{
+			Name:     "mt-broker-filter",
+			Replicas: ptr.Int32(1),
+		},
+		{
+			Name:     "mt-broker-ingress",
+			Replicas: ptr.Int32(1),
+		},
+	}
+
 	if !eventingistio.IsEnabled(ke.GetSpec().GetConfig()) {
 		eventingistio.ScaleIstioController(requiredNs, ke, 0)
 	} else {
