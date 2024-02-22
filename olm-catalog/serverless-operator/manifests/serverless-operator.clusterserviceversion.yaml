@@ -820,7 +820,7 @@ spec:
                 serviceAccountName: knative-operator
                 containers:
                   - name: knative-operator
-                    image: registry.ci.openshift.org/knative/serverless-openshift-knative-operator:release-1.32
+                    image: registry.ci.openshift.org/knative/serverless-openshift-knative-operator:main
                     readinessProbe:
                       periodSeconds: 1
                       httpGet:
@@ -932,6 +932,8 @@ spec:
                         value: "registry.access.redhat.com/ubi8/nodejs-16@sha256:720a3a2594a1804b5ecd7046a5ce4be82885bfa7c83df4c9bcade0e1e00db078"
                       - name: "IMAGE_KN_PLUGIN_FUNC_OPENJDK_17"
                         value: "registry.access.redhat.com/ubi8/openjdk-17@sha256:b00f687d913b8d1e027f7eabd6765de6c8d469629bef9550f10dbf207af24fe5"
+                      - name: "IMAGE_KN_PLUGIN_FUNC_OPENJDK_21"
+                        value: "registry.access.redhat.com/ubi8/openjdk-21@sha256:4f35566977c35306a8f2102841ceb7fa10a6d9ac47c079131caed5655140f9b2"
                       - name: "IMAGE_KN_PLUGIN_FUNC_PYTHON_39"
                         value: "registry.access.redhat.com/ubi8/python-39@sha256:cf0af1732c483d4e6ba708f9f4d5541cb43c98c3c67c604c23b0e55897eebe41"
                       - name: "CURRENT_VERSION"
@@ -973,7 +975,7 @@ spec:
                           - ALL
                 containers:
                   - name: knative-openshift
-                    image: registry.ci.openshift.org/knative/serverless-knative-operator:release-1.32
+                    image: registry.ci.openshift.org/knative/serverless-knative-operator:main
                     imagePullPolicy: Always
                     readinessProbe:
                       httpGet:
@@ -1092,6 +1094,8 @@ spec:
                         value: "registry.access.redhat.com/ubi8/nodejs-16@sha256:720a3a2594a1804b5ecd7046a5ce4be82885bfa7c83df4c9bcade0e1e00db078"
                       - name: "IMAGE_KN_PLUGIN_FUNC_OPENJDK_17"
                         value: "registry.access.redhat.com/ubi8/openjdk-17@sha256:b00f687d913b8d1e027f7eabd6765de6c8d469629bef9550f10dbf207af24fe5"
+                      - name: "IMAGE_KN_PLUGIN_FUNC_OPENJDK_21"
+                        value: "registry.access.redhat.com/ubi8/openjdk-21@sha256:4f35566977c35306a8f2102841ceb7fa10a6d9ac47c079131caed5655140f9b2"
                       - name: "IMAGE_KN_PLUGIN_FUNC_PYTHON_39"
                         value: "registry.access.redhat.com/ubi8/python-39@sha256:cf0af1732c483d4e6ba708f9f4d5541cb43c98c3c67c604c23b0e55897eebe41"
                       - name: "KAFKA_IMAGE_kafka-broker-receiver__kafka-broker-receiver"
@@ -1143,7 +1147,7 @@ spec:
                 serviceAccountName: knative-openshift-ingress
                 containers:
                   - name: knative-openshift-ingress
-                    image: registry.ci.openshift.org/knative/serverless-ingress:release-1.32
+                    image: registry.ci.openshift.org/knative/serverless-ingress:main
                     imagePullPolicy: Always
                     ports:
                       - containerPort: 9090
@@ -1292,11 +1296,11 @@ spec:
         - knativeeventings.operator.knative.dev
   relatedImages:
     - name: "knative-operator"
-      image: "registry.ci.openshift.org/knative/serverless-openshift-knative-operator:release-1.32"
+      image: "registry.ci.openshift.org/knative/serverless-openshift-knative-operator:main"
     - name: "knative-openshift"
-      image: "registry.ci.openshift.org/knative/serverless-knative-operator:release-1.32"
+      image: "registry.ci.openshift.org/knative/serverless-knative-operator:main"
     - name: "knative-openshift-ingress"
-      image: "registry.ci.openshift.org/knative/serverless-ingress:release-1.32"
+      image: "registry.ci.openshift.org/knative/serverless-ingress:main"
     - name: "IMAGE_queue-proxy"
       image: "registry.ci.openshift.org/openshift/knative-serving-queue:knative-v1.11"
     - name: "IMAGE_activator"
@@ -1359,6 +1363,8 @@ spec:
       image: "registry.access.redhat.com/ubi8/nodejs-16@sha256:720a3a2594a1804b5ecd7046a5ce4be82885bfa7c83df4c9bcade0e1e00db078"
     - name: "IMAGE_KN_PLUGIN_FUNC_OPENJDK_17"
       image: "registry.access.redhat.com/ubi8/openjdk-17@sha256:b00f687d913b8d1e027f7eabd6765de6c8d469629bef9550f10dbf207af24fe5"
+    - name: "IMAGE_KN_PLUGIN_FUNC_OPENJDK_21"
+      image: "registry.access.redhat.com/ubi8/openjdk-21@sha256:4f35566977c35306a8f2102841ceb7fa10a6d9ac47c079131caed5655140f9b2"
     - name: "IMAGE_KN_PLUGIN_FUNC_PYTHON_39"
       image: "registry.access.redhat.com/ubi8/python-39@sha256:cf0af1732c483d4e6ba708f9f4d5541cb43c98c3c67c604c23b0e55897eebe41"
     - name: "KAFKA_IMAGE_kafka-broker-receiver__kafka-broker-receiver"
