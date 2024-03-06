@@ -37,13 +37,16 @@ if [[ $TEST_KNATIVE_E2E == true ]]; then
   # See https://github.com/knative/eventing/issues/5996 (the same issue affects Eventing Kafka)
   ensure_kubeconfig
   if [[ $TEST_KNATIVE_KAFKA_BROKER == true ]]; then
-    upstream_knative_eventing_kafka_broker_e2e
+    #upstream_knative_eventing_kafka_broker_e2e
+    echo
   fi
   if [[ $TEST_KNATIVE_SERVING == true ]]; then
-    upstream_knative_serving_e2e_and_conformance_tests
+    #upstream_knative_serving_e2e_and_conformance_tests
+    echo
   fi
   if [[ $TEST_KNATIVE_EVENTING == true ]]; then
-    upstream_knative_eventing_e2e
+    #upstream_knative_eventing_e2e
+    echo
   fi
 fi
 

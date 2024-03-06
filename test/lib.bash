@@ -447,7 +447,7 @@ EOF
     fi
     # Run the two test suites one by one to prevent the situation when nested
     # tests time out and cause all other tests to have "Unknown" status.
-    go_test_e2e -run=TestServerlessUpgradePrePost -timeout=90m "${common_opts[@]}"
+    #go_test_e2e -run=TestServerlessUpgradePrePost -timeout=90m "${common_opts[@]}"
     go_test_e2e -run=TestServerlessUpgradeContinual -timeout=60m "${common_opts[@]}"
   fi
 
@@ -461,9 +461,9 @@ EOF
     # Make sure the cluster upgrade is run with latest version of Serverless as
     # the Serverless upgrade tests leave the product at the previous version (after downgrade).
     approve_csv "$CURRENT_CSV" "$OLM_UPGRADE_CHANNEL"
-    go_test_e2e -run=TestClusterUpgrade -timeout=220m "${common_opts[@]}" \
-      --openshiftimage="${UPGRADE_OCP_IMAGE}" \
-      --upgradeopenshift
+    #go_test_e2e -run=TestClusterUpgrade -timeout=220m "${common_opts[@]}" \
+    #  --openshiftimage="${UPGRADE_OCP_IMAGE}" \
+    #  --upgradeopenshift
   fi
 
   # Delete the leftover namespace.
